@@ -23,7 +23,10 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if (!canMove)
+        {
+            rb.linearVelocity = Vector3.zero;
             return;
+        }
         
         Vector2 moveInput = playerInputs.moveInput;
 

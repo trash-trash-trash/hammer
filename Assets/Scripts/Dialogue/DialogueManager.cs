@@ -10,11 +10,15 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager Instance;
 
     public TMP_Text dialogueText;
+    public TMP_Text speakerName01Text;
+    public TMP_Text speakerName02Text;
     public GameObject dialogueBox;
 
     public float letterDelay = 0.05f;
 
-    public List<string> dialogueLines = new List<string>();
+    public List<DialogueLine> dialogueLines = new List<DialogueLine>();
+
+    public GameObject currentSpeaker;
 
     private int currentLine;
     private Coroutine typingCoroutine;
@@ -29,9 +33,9 @@ public class DialogueManager : MonoBehaviour
         dialogueBox.SetActive(false);
     }
 
-    public void StartConversation(List<string> newDialogue)
+    public void StartConversation(List<DialogueLine> newDialogue)
     {
-        dialogueLines = new List<string>(newDialogue);
+        dialogueLines = new List<DialogueLine>(newDialogue);
         currentLine = 0;
 
         dialogueBox.SetActive(true);
@@ -62,8 +66,25 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        currentDialogue = dialogueLines[currentLine];
+        DialogueLine line = dialogueLines[currentLine];
         currentLine++;
+        
+
+        currentDialogue = line.dialogue;
+
+        if(line.isPlayer)
+        {
+            speakerName01Text.text = line.speakerName;
+            speakerName02Text.text = "";
+        }
+        else
+        {
+            speakerName01Text.text = "";
+            speakerName02Text.text = line.speakerName;
+        }
+        
+        
+        currentSpeaker = line.speaker;
 
         typingCoroutine = StartCoroutine(TypeDialogue());
     }

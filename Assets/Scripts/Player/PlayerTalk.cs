@@ -39,6 +39,7 @@ public class PlayerTalk : MonoBehaviour
 
         if (speakingTo != null)
         {
+            speakingTo.StartTalking();
             isTalking = true;
             playerBrain.ChangeState(PlayerStates.Talk);
             dialogueManager.StartConversation(speakingTo.dialogue);
@@ -48,9 +49,11 @@ public class PlayerTalk : MonoBehaviour
 
     public void StopTalking()
     {
+        speakingTo.StopTalking();
         isTalking = false;
         playerBrain.ChangeState(PlayerStates.Idle);
         dialogueManager.AnnounceDialogueDone -= StopTalking;
+        speakingTo = null;
     }
 
     private void OnDestroy()
